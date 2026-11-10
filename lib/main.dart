@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget
   Widget build(BuildContext context) 
   {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       //Scaffold = Page Structure
       home: Scaffold
       (
@@ -79,7 +80,7 @@ class MyApp extends StatelessWidget
                       Expanded( 
                         child: ElevatedButton(
                           onPressed: () {}, 
-                          child: const Text('Book Now'),
+                          child: const Text('Student Moodle'),
                         ),
                       ),
 
