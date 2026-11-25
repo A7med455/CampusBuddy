@@ -1,103 +1,124 @@
 import 'package:flutter/material.dart';
+import 'announcement.dart';
 
-//where we run the app
-void main()
-{
+void main() {
   runApp(const MyApp());
 }
 
-//MyApp is the root of the app
-class MyApp extends StatelessWidget 
-{
+// The list of announcements (fake data for now, no database yet)
+final List<Announcement> announcements = [
+  Announcement(
+    title: 'Welcome Week',
+    description: 'Welcome back students! Activities start on Sunday in the main hall.',
+    imageUrl: 'https://picsum.photos/id/1011/600/400',
+  ),
+  Announcement(
+    title: 'Lost Wallet',
+    description: 'A black wallet was lost near Building B. Please contact the student affairs office.',
+    imageUrl: 'https://picsum.photos/id/1025/600/400',
+  ),
+  Announcement(
+    title: 'Robotics Club Event',
+    description: 'The Robotics Club is holding a workshop on Thursday at 2 PM in Lab 3.',
+    imageUrl: 'https://picsum.photos/id/1035/600/400',
+  ),
+  Announcement(
+    title: 'Found Keys',
+    description: 'A set of keys was found in the library. Pick them up from the front desk.',
+    imageUrl: 'https://picsum.photos/id/1043/600/400',
+  ),
+];
+
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-//MaterialApp provide Material styling, navigation, and themes
   @override
-  Widget build(BuildContext context) 
-  {
+  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      //Scaffold = Page Structure
-      home: Scaffold
-      (
+      title: 'CampusBuddy',
+      theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
+      home: const HomeScreen(),
+    );
+  }
+}
 
-        appBar: AppBar
-        (
-          backgroundColor: const Color.fromARGB(255, 16, 52, 113),
-          //tells flutter,make everthing inside white by default
-          foregroundColor: Colors.white,
-          leading: const Icon(Icons.menu),
-          title: const Text("CampusBuddy"),
-          actions:const [
-            Icon(Icons.favorite_border,color: Colors.red),
-            ],
-          ),
-        
-          body: SingleChildScrollView
-          (
-          child: Column
-          (
-            //forces everthing to allign left
-            crossAxisAlignment: CrossAxisAlignment.start,
-              children: 
-              [
-                Image.network
-                (
-                'https://tse4.mm.bing.net/th/id/OIP.ZUfp4H6xYFPe3gtyFCUmkQHaQB?r=0&rs=1&pid=ImgDetMain&o=7&rm=3',
-                width: double.infinity, //stretch as wide as the phone screens
-                height: 250, //250px
-                fit : BoxFit.cover
-                ),
+// ---------------- Screen 1: Home ----------------
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
-                const SizedBox(height: 16), // invisible space below the image
-                const Padding
-                (
-                  padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('CampusBuddy')),
+      body: ListView.builder(
+        itemCount: announcements.length,
+        itemBuilder: (context, index) {
+          final item = announcements[index];
 
-                  child: Text
-                  (
-                    "Now it's more easier",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          return Card(
+            child: ListTile(
+              leading: const Icon(Icons.campaign),
+              title: Text(item.title),
+              subtitle: Text(
+                item.description,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              // Tapping the item opens the Details screen
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailsScreen(announcement: item),
                   ),
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
 
-                ),
+// ---------------- Screen 2: Details ----------------
+class DetailsScreen extends StatelessWidget {
+  final Announcement announcement;
 
-                Padding(padding: const EdgeInsets.only(left: 16, top: 8, right: 16),
+  const DetailsScreen({super.key, required this.announcement});
 
-                  child: Text
-                  ('not decided yet',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 14,color: Colors.black),
-                  )
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16), // Space around the buttons
-                  child: Row( // Row puts things side-by-side
-                    children: [
-                      
-                      // First Button
-                      Expanded( 
-                        child: ElevatedButton(
-                          onPressed: () {}, 
-                          child: const Text('Student Moodle'),
-                        ),
-                      ),
-
-                      const SizedBox(width: 10), // The gap between buttons
-
-                      // Second Button
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {}, 
-                          child: const Text('Learn More'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-          ),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Details')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.network(
+              announcement.imageUrl,
+              width: double.infinity,
+              height: 200,
+              fit: BoxFit.cover,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              announcement.title,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(announcement.description),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // go back to Home
+              },
+              child: const Text('Back'),
+            ),
+          ],
         ),
       ),
     );
