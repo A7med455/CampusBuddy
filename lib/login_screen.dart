@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const Text(
                 'CampusBuddy',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold,color: Color.fromARGB(255, 19, 13, 182)),
               ),
               const SizedBox(height: 32),
               TextFormField(
