@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'announcement.dart';
+import 'login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,19 +39,32 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'CampusBuddy',
       theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
-      home: const HomeScreen(),
+      home: const LoginScreen(),
     );
   }
 }
 
-// ---------------- Screen 1: Home ----------------
+//Home page
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('CampusBuddy')),
+      appBar: AppBar(
+  title: const Text('CampusBuddy'),
+  actions: [
+    IconButton(
+      icon: const Icon(Icons.logout),
+      onPressed: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      },
+    ),
+  ],
+),
       body: ListView.builder(
         itemCount: announcements.length,
         itemBuilder: (context, index) {
