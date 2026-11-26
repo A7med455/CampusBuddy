@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'theme.dart';
 import 'announcement.dart';
 import 'login_screen.dart';
 
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'CampusBuddy',
-      theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
+      theme: appTheme,
       home: const LoginScreen(),
     );
   }
@@ -53,6 +54,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
   title: const Text('CampusBuddy'),
+  
   actions: [
     IconButton(
       icon: const Icon(Icons.logout),
@@ -71,6 +73,7 @@ class HomeScreen extends StatelessWidget {
           final item = announcements[index];
 
           return Card(
+            color: const Color.fromARGB(255, 255, 255, 255),
             child: ListTile(
               leading: const Icon(Icons.campaign),
               title: Text(item.title),
@@ -97,7 +100,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// ---------------- Screen 2: Details ----------------
+//              page2
 class DetailsScreen extends StatelessWidget {
   final Announcement announcement;
 
